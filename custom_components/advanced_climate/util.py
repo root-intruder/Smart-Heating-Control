@@ -149,6 +149,12 @@ def parse_clock(value: Any, default: time = time(0, 0)) -> time:
         return default
 
 
+def clock_minutes(value: Any) -> int:
+    """Minutes of an HH:MM[:SS] value taken as a duration."""
+    parsed = parse_clock(value)
+    return parsed.hour * 60 + parsed.minute
+
+
 def as_list(value: Any) -> list[str]:
     """Normalize an entity selector value to a list."""
     if not value:

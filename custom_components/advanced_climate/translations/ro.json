@@ -246,7 +246,6 @@
           "quiet_start": "Ore de liniște de la",
           "quiet_end": "Ore de liniște până la",
           "pause_remind_hours": "Amintește când pauza durează mai mult de",
-          "alert_window_minutes": "Alertă când o fereastră e deschisă mai mult de",
           "alert_unavailable_minutes": "Alertă când un dispozitiv e indisponibil mai mult de",
           "alert_silent_hours": "Alertă când un senzor de temperatură nu trimite nimic",
           "alert_no_effect_hours": "Alertă când încălzirea nu are efect",
@@ -262,7 +261,6 @@
           "quiet_start": "De la această oră se trimit doar alertele importante; celelalte așteaptă sfârșitul orelor de liniște și se trimit doar dacă mai sunt valabile. Lasă ambele goale pentru fără ore de liniște.",
           "quiet_end": "Sfârșitul orelor de liniște (poate fi a doua zi dimineață).",
           "pause_remind_hours": "O avertizare când încălzirea rămâne în pauză atât timp, apoi o dată pe zi (o pauză uitată înseamnă o casă rece). 0 = niciodată.",
-          "alert_window_minutes": "Alertă când o fereastră rămâne deschisă atât, cât e nevoie de încălzire.",
           "alert_unavailable_minutes": "Alertă când un termostat sau senzor e indisponibil atât timp.",
           "alert_silent_hours": "Alertă când un senzor de temperatură al camerei rămâne disponibil, dar nu a trimis nicio valoare (nici aceeași) atât timp: o baterie descărcată sau semnalul pierdut păstrează des ultima valoare. Un senzor tăcut al camerei e lăsat deoparte până trimite din nou, ca unul indisponibil (se folosesc ceilalți senzori, altfel termostatul, altfel eco). 0 = oprit. Mărește-l pentru senzorii care raportează doar când se schimbă temperatura și pentru un senzor template sau de grup (o medie), care scrie o valoare doar când se schimbă unul dintre senzorii lui.",
           "alert_no_effect_hours": "Alertă când o cameră încălzește atât timp, clar sub țintă, și temperatura crește mult mai puțin decât așteaptă modelul învățat: un ventil blocat, o sursă de căldură care nu pornește, o fereastră deschisă fără senzor. Doar după ce camera și-a învățat modelul (înainte, o încălzire lentă în pardoseală nu s-ar deosebi de una blocată). 0 = oprit.",
@@ -780,6 +778,24 @@
             "hysteresis": "Camera cere căldură sub ținta minus această valoare și se oprește peste ținta plus această valoare, măsurat de senzorul camerei.",
             "inertia_control": "După ce camera a învățat cât de încet reacționează încălzirea, încălzirea se termină puțin mai devreme când căldura deja dată ar duce singură camera până la limita de sus a histerezisului și începe puțin mai devreme când camera ar coborî la limita de jos înainte să ajungă căldura. Banda rămâne limita. Oprit: decide doar histerezisul."
           }
+        },
+        "windows_notify": {
+          "title": "Notificări fereastră deschisă",
+          "data": {
+            "window_notify": "Activează notificările pentru fereastră deschisă"
+          },
+          "data_description": {
+            "window_notify": "O avertizare când o fereastră sau o ușă rămâne deschisă cât timp e nevoie de încălzire. Se încheie când fereastra se închide."
+          }
+        },
+        "windows_notify_time": {
+          "title": "Notificări fereastră deschisă: după cât timp",
+          "data": {
+            "window_notify_after": "Notifică după"
+          },
+          "data_description": {
+            "window_notify_after": "Cât timp poate rămâne fereastra deschisă înainte de avertizare. Timpul se socotește cât e nevoie de încălzire."
+          }
         }
       },
       "abort": {
@@ -802,7 +818,8 @@
         "level_name_is_key": "Numele „{name}” e numele intern al altui nivel în program (home, sleep, eco, away, comfort, activity, frost): alege altul.",
         "calibration_sensor_required": "Calibrarea TRV scrie temperatura camerei în TRV, deci are nevoie de un senzor de temperatură al camerei. Adaugă unul sau pune calibrarea pe Oprit.",
         "calibration_entities_required": "Alege entitățile number ale TRV-ului în care scrie calibrarea (offset-ul sau intrarea de temperatură externă), sau pune calibrarea pe Oprit în pagina anterioară.",
-        "entity_is_circuit": "{entity} e releul unui circuit al casei {owner}. Nu poate fi și dispozitivul unei camere sau alt circuit."
+        "entity_is_circuit": "{entity} e releul unui circuit al casei {owner}. Nu poate fi și dispozitivul unei camere sau alt circuit.",
+        "window_notify_time_required": "Alege cel puțin un minut."
       }
     },
     "scenario": {

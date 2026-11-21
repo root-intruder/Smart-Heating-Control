@@ -224,7 +224,12 @@ the TRV, so it is the simpler choice.
 | **Windows of other rooms** | Windows that also cool this room, e.g. the living room balcony door for the hall. |
 | **Detect open windows from the temperature** | A quick temperature drop counts as an open window for 15 minutes. Useful for rooms without window sensors. |
 
-The second form, **Windows: delays and action**:
+Then **Open window notifications**: whether a window left open is told, and,
+if it is, after how long (30 minutes by default). The warning is sent while
+heating is needed and ends when the window is closed. Turn it off for a room
+where a window is often open on purpose (a workshop, a conservatory).
+
+The last form, **Windows: delays and action**:
 
 | Field | Default | What it does |
 | --- | --- | --- |

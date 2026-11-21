@@ -26,8 +26,11 @@ from .const import (
     CONF_SCHEDULE,
     CONF_SCHEDULE_SOURCE,
     CONF_SECONDARY_SOURCE,
+    CONF_WINDOW_NOTIFY,
+    CONF_WINDOW_NOTIFY_AFTER,
     DEFAULT_SCHEDULE,
     DOMAIN,
+    LEGACY_CONF_ALERT_WINDOW_MINUTES,
     SCHEDULE_INTERNAL,
     SUBENTRY_ROOM,
 )
@@ -87,6 +90,23 @@ async def async_migrate_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
                 "%s: circuit relays left from a removed heat source were cleared", entry.title
             )
         hass.config_entries.async_update_entry(entry, options=options, minor_version=2)
+    if entry.minor_version < 3:
+        # Before 2.7 one window alert time for the whole house: every room gets
+        # it now (the options form asks per room, on its windows page).
+        options = dict(entry.options)
+        minutes = options.pop(LEGACY_CONF_ALERT_WINDOW_MINUTES, None)
+        total = max(0, round(float(minutes))) if minutes is not None else 30
+        after = f"{total // 60:02d}:{total % 60:02d}:00"
+        for subentry in list(entry.subentries.values()):
+            if subentry.subentry_type != SUBENTRY_ROOM or CONF_WINDOW_NOTIFY in subentry.data:
+                continue
+            data = {
+                **subentry.data,
+                CONF_WINDOW_NOTIFY: True,
+                CONF_WINDOW_NOTIFY_AFTER: after,
+            }
+            hass.config_entries.async_update_subentry(entry, subentry, data=data)
+        hass.config_entries.async_update_entry(entry, options=options, minor_version=3)
     return True
 
 

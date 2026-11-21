@@ -246,7 +246,6 @@
           "quiet_start": "Ore di silenzio dalle",
           "quiet_end": "Ore di silenzio fino alle",
           "pause_remind_hours": "Ricorda quando la pausa dura più di",
-          "alert_window_minutes": "Avvisa quando una finestra resta aperta più di",
           "alert_unavailable_minutes": "Avvisa quando un dispositivo non è disponibile per più di",
           "alert_silent_hours": "Avvisa quando un sensore di temperatura non invia nulla da",
           "alert_no_effect_hours": "Avvisa quando il riscaldamento non ha effetto da",
@@ -262,7 +261,6 @@
           "quiet_start": "Da quest'ora partono solo gli avvisi importanti; gli altri aspettano la fine delle ore di silenzio e partono solo se valgono ancora. Lascia vuoti entrambi per non avere ore di silenzio.",
           "quiet_end": "Fine delle ore di silenzio (può essere la mattina dopo).",
           "pause_remind_hours": "Una segnalazione quando il riscaldamento resta in pausa così a lungo, poi una volta al giorno (una pausa dimenticata vuol dire casa fredda). 0 = mai.",
-          "alert_window_minutes": "Avvisa quando una finestra resta aperta così a lungo mentre serve calore.",
           "alert_unavailable_minutes": "Avvisa quando un termostato o un sensore non è disponibile così a lungo.",
           "alert_silent_hours": "Avvisa quando un sensore di temperatura della stanza resta disponibile ma non invia alcun valore (nemmeno lo stesso) da così tanto: una batteria scarica o un segnale perso spesso lasciano fermo l'ultimo valore. Un sensore muto viene escluso finché non torna a inviare, come uno non disponibile (si usano gli altri sensori, altrimenti il termostato, altrimenti eco). 0 = spento. Alzalo per i sensori che inviano solo quando la temperatura cambia, e per un sensore template o di gruppo (una media), che scrive un valore solo quando cambia uno dei suoi sensori.",
           "alert_no_effect_hours": "Avvisa quando una stanza scalda così a lungo, chiaramente sotto l'obiettivo, e la sua temperatura sale molto meno di quanto si aspetta il modello appreso: una valvola bloccata, una fonte di calore che non parte, una finestra aperta senza sensore. Solo quando la stanza ha imparato il suo modello (prima un pavimento radiante lento non si distingue da uno bloccato). 0 = spento.",
@@ -780,6 +778,24 @@
             "hysteresis": "La stanza chiede calore sotto l'obiettivo meno questo valore e smette sopra l'obiettivo più questo valore, misurato dal sensore della stanza.",
             "inertia_control": "Quando la stanza ha imparato quanto lentamente reagisce il suo riscaldamento, questo finisce un po' prima se il calore già dato porterebbe da solo la stanza in cima alla fascia di isteresi, e comincia un po' prima se la stanza scenderebbe sotto il fondo della fascia prima che arrivi il calore. La fascia resta il limite. Spento: decide solo l'isteresi."
           }
+        },
+        "windows_notify": {
+          "title": "Notifiche finestra aperta",
+          "data": {
+            "window_notify": "Attiva le notifiche per la finestra aperta"
+          },
+          "data_description": {
+            "window_notify": "Un avviso quando una finestra o una porta resta aperta mentre serve calore. Termina quando la finestra viene richiusa."
+          }
+        },
+        "windows_notify_time": {
+          "title": "Notifiche finestra aperta: dopo quanto tempo",
+          "data": {
+            "window_notify_after": "Avvisa dopo"
+          },
+          "data_description": {
+            "window_notify_after": "Quanto può restare aperta la finestra prima dell'avviso. Il tempo conta finché serve calore."
+          }
         }
       },
       "abort": {
@@ -802,7 +818,8 @@
         "level_name_is_key": "Il nome \"{name}\" è già il nome di un altro livello nel programma (home, sleep, eco, away, comfort, activity, frost): scegline un altro.",
         "calibration_sensor_required": "La calibrazione scrive la temperatura della stanza nella valvola termostatica, quindi serve un sensore di temperatura nella stanza. Aggiungine uno o imposta la calibrazione su Spento.",
         "calibration_entities_required": "Scegli le entità number della valvola in cui scrive la calibrazione (l'offset o la temperatura da sensore remoto), oppure imposta la calibrazione su Spento nella pagina precedente.",
-        "entity_is_circuit": "{entity} è un relè di circuito di {owner}. Non può essere anche un dispositivo di una stanza o un altro circuito."
+        "entity_is_circuit": "{entity} è un relè di circuito di {owner}. Non può essere anche un dispositivo di una stanza o un altro circuito.",
+        "window_notify_time_required": "Scegli almeno un minuto."
       }
     },
     "scenario": {

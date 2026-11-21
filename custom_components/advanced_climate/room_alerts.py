@@ -20,13 +20,14 @@ from homeassistant.helpers import (
 from .const import (
     CONF_ALERT_NO_EFFECT_HOURS,
     CONF_ALERT_SILENT_HOURS,
-    CONF_ALERT_WINDOW_MINUTES,
     CONF_BATTERY_THRESHOLD,
     CONF_HUMIDITY_SENSOR,
     CONF_OCCUPANCY_SENSORS,
     CONF_SCHEDULE_HELPER,
     CONF_SCHEDULE_SOURCE,
     CONF_TEMP_SENSORS,
+    CONF_WINDOW_NOTIFY,
+    CONF_WINDOW_NOTIFY_AFTER,
     CONF_WINDOW_SENSORS,
     MODE_OFF,
     MODE_SUMMER,
@@ -46,6 +47,7 @@ from .schedule import (
 )
 from .util import (
     as_list,
+    clock_minutes,
     finite,
     float_state,
     from_celsius,
@@ -275,10 +277,18 @@ class RoomAlerts:
         """Alerts for long open windows, unavailable devices, failed sensors and schedule errors."""
         house = self.house
         # Window open for too long while heating matters.
-        if self.window_open and self.window.opened_at is not None:
-            minutes = float(house.options[CONF_ALERT_WINDOW_MINUTES])
+        if (
+            self.config.get(CONF_WINDOW_NOTIFY)
+            and self.window_open
+            and self.window.opened_at is not None
+        ):
+            minutes = clock_minutes(self.config.get(CONF_WINDOW_NOTIFY_AFTER))
             heating_relevant = house.mode not in (MODE_OFF, MODE_SUMMER) and house.season_active
-            if heating_relevant and now - self.window.opened_at >= timedelta(minutes=minutes):
+            if (
+                minutes > 0
+                and heating_relevant
+                and now - self.window.opened_at >= timedelta(minutes=minutes)
+            ):
                 house.notify(
                     f"window_{self.id}",
                     f"{self.name}: a window has been open for more than {minutes:.0f} minutes.",

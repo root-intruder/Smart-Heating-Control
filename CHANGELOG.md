@@ -9,6 +9,13 @@ GitHub releases.
 
 ### New
 
+- 🪟 **Open window notifications, per room**: on the room's *Windows and doors*
+  page, *Enable open window notifications* (on by default) and *Notify after*
+  (hh:mm, 30 minutes by default) decide whether and when a window left open
+  is told. The warning is sent while heating is needed and ends when the
+  window is closed; *off* means no warning for that room. The old house-wide
+  *Alert when a window is open longer than* (Alerts) is gone: its time is
+  moved to every room, which can now change it or turn it off.
 - 🔗 **A change on one thermostat for the whole room**: in a room with several
   thermostats, *A change on one thermostat* (in the room's *Extras*) chooses
   *Only that thermostat* (as until now, the default) or *The whole room*. With

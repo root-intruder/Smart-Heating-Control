@@ -246,7 +246,6 @@
           "quiet_start": "Stille uren vanaf",
           "quiet_end": "Stille uren tot",
           "pause_remind_hours": "Herinneren als de pauze langer duurt dan",
-          "alert_window_minutes": "Melden als een raam langer open is dan",
           "alert_unavailable_minutes": "Melden als een apparaat langer onbeschikbaar is dan",
           "alert_silent_hours": "Melden als een temperatuursensor niets stuurt gedurende",
           "alert_no_effect_hours": "Melden als verwarmen geen effect heeft gedurende",
@@ -262,7 +261,6 @@
           "quiet_start": "Vanaf dit tijdstip worden alleen belangrijke meldingen verstuurd; de rest wacht tot de stille uren voorbij zijn en wordt alleen verstuurd als ze dan nog gelden. Laat beide leeg voor geen stille uren.",
           "quiet_end": "Einde van de stille uren (mag de volgende ochtend zijn).",
           "pause_remind_hours": "Een waarschuwing als de verwarming zo lang gepauzeerd blijft, daarna één keer per dag (een vergeten pauze betekent een koud huis). 0 = nooit.",
-          "alert_window_minutes": "Melden als een raam zo lang open blijft terwijl er warmte nodig is.",
           "alert_unavailable_minutes": "Melden als een thermostaat of sensor zo lang onbeschikbaar is.",
           "alert_silent_hours": "Melden als een temperatuursensor van een kamer beschikbaar blijft maar zo lang geen waarde heeft gestuurd (zelfs niet dezelfde): een lege batterij of een weggevallen signaal laat vaak de laatste waarde staan. Een stille sensor wordt genegeerd tot hij weer meldt, net als een onbeschikbare (dan tellen de andere sensoren, anders de thermostaat, anders eco). 0 = uit. Verhoog voor sensoren die alleen melden als de temperatuur verandert, en voor een template- of groepssensor (een gemiddelde), die alleen een waarde schrijft als een van zijn sensoren verandert.",
           "alert_no_effect_hours": "Melden als een kamer zo lang duidelijk onder zijn doeltemperatuur verwarmt en de temperatuur veel minder stijgt dan het geleerde model verwacht: een vastzittende kraan, een warmtebron die niet start, een open raam zonder sensor. Pas zodra de kamer zijn model heeft geleerd (daarvoor is trage vloerverwarming niet te onderscheiden van een vastzittende). 0 = uit.",
@@ -780,6 +778,24 @@
             "hysteresis": "De kamer vraagt om warmte onder de doeltemperatuur min deze waarde en stopt boven de doeltemperatuur plus deze waarde, gemeten door de kamersensor.",
             "inertia_control": "Zodra de kamer heeft geleerd hoe traag de verwarming reageert, stopt het verwarmen iets eerder als de al geleverde warmte de kamer vanzelf naar de bovengrens van de hysterese brengt, en begint het iets eerder als de kamer anders onder de ondergrens zakt voordat de warmte aankomt. De grenzen blijven. Uit: alleen de hysterese beslist."
           }
+        },
+        "windows_notify": {
+          "title": "Meldingen bij open raam",
+          "data": {
+            "window_notify": "Meldingen bij een open raam inschakelen"
+          },
+          "data_description": {
+            "window_notify": "Een waarschuwing wanneer een raam of deur open blijft terwijl er warmte nodig is. Die stopt wanneer het raam weer dicht is."
+          }
+        },
+        "windows_notify_time": {
+          "title": "Meldingen bij open raam: na hoe lang",
+          "data": {
+            "window_notify_after": "Melden na"
+          },
+          "data_description": {
+            "window_notify_after": "Hoe lang het raam open mag blijven voordat de waarschuwing komt. De tijd telt zolang er warmte nodig is."
+          }
         }
       },
       "abort": {
@@ -802,7 +818,8 @@
         "level_name_is_key": "De naam '{name}' is in het schema al de naam van een ander niveau (home, sleep, eco, away, comfort, activity, frost): kies een andere.",
         "calibration_sensor_required": "De kalibratie schrijft de kamertemperatuur in de radiatorkraan en heeft dus een temperatuursensor in de kamer nodig. Voeg er een toe, of zet de kalibratie op Uit.",
         "calibration_entities_required": "Kies de number-entiteiten van de radiatorkraan waarin de kalibratie schrijft (de offset of de externe temperatuur), of zet de kalibratie op de vorige pagina op Uit.",
-        "entity_is_circuit": "{entity} is een circuitrelais van {owner}. Het kan niet ook een apparaat van een kamer of een ander circuit zijn."
+        "entity_is_circuit": "{entity} is een circuitrelais van {owner}. Het kan niet ook een apparaat van een kamer of een ander circuit zijn.",
+        "window_notify_time_required": "Kies minstens één minuut."
       }
     },
     "scenario": {

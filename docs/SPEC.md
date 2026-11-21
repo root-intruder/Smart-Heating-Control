@@ -156,7 +156,7 @@ closes the room returns to whatever the rules say at that moment.
 | Action | frost protection | Frost protection or off |
 | Detect from temperature | off | A quick drop (e.g. 1 °C in 3 min) counts as an open window; a jump because a temperature sensor stopped or came back (or the device sensor took over) is not a drop: the detection starts again from the new value |
 | Windows of other rooms | none | e.g. the balcony door of the living room also affects the hall |
-| Alert after | 30 min | Notification while heating is relevant |
+| Notifications | on, 30 min | A warning while heating is needed; per room, off or after any time (hh:mm) |
 | Ignore above outdoor temperature | off | In spring/autumn airing does not lower heating |
 
 ## 6. Weather and season

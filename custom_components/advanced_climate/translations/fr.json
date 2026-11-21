@@ -246,7 +246,6 @@
           "quiet_start": "Heures calmes à partir de",
           "quiet_end": "Heures calmes jusqu'à",
           "pause_remind_hours": "Rappeler quand la pause dure plus de",
-          "alert_window_minutes": "Alerter quand une fenêtre reste ouverte plus de",
           "alert_unavailable_minutes": "Alerter quand un appareil est indisponible plus de",
           "alert_silent_hours": "Alerter quand un capteur de température n'envoie rien pendant",
           "alert_no_effect_hours": "Alerter quand le chauffage reste sans effet pendant",
@@ -262,7 +261,6 @@
           "quiet_start": "À partir de cette heure, seules les alertes importantes sont envoyées ; les autres attendent la fin des heures calmes et ne partent que si elles sont encore valables. Laissez les deux vides pour ne pas avoir d'heures calmes.",
           "quiet_end": "Fin des heures calmes (peut être le lendemain matin).",
           "pause_remind_hours": "Un avertissement quand le chauffage reste en pause aussi longtemps, puis une fois par jour (une pause oubliée, c'est une maison froide). 0 = jamais.",
-          "alert_window_minutes": "Alerter quand une fenêtre reste ouverte aussi longtemps alors qu'il faut chauffer.",
           "alert_unavailable_minutes": "Alerter quand un thermostat ou un capteur est indisponible aussi longtemps.",
           "alert_silent_hours": "Alerter quand un capteur de température d'une pièce reste disponible mais n'a envoyé aucune valeur (pas même la même) depuis aussi longtemps : une pile vide ou un signal perdu laissent souvent affichée la dernière valeur. Un capteur muet est écarté jusqu'à ce qu'il se manifeste à nouveau, comme un capteur indisponible (on utilise alors les autres capteurs, sinon le thermostat, sinon éco). 0 = désactivé. Augmentez pour les capteurs qui n'envoient que lorsque la température change, et pour un capteur template ou de groupe (une moyenne), qui n'écrit une valeur que lorsqu'un de ses capteurs change.",
           "alert_no_effect_hours": "Alerter quand une pièce chauffe aussi longtemps, nettement sous sa consigne, et que sa température monte bien moins que ce que prévoit son modèle appris : une vanne bloquée, une source de chaleur qui ne démarre pas, une fenêtre ouverte sans capteur. Seulement une fois que la pièce a appris son modèle (avant, un plancher chauffant lent ne se distingue pas d'un plancher bloqué). 0 = désactivé.",
@@ -780,6 +778,24 @@
             "hysteresis": "La pièce demande de la chaleur sous la consigne moins cette valeur et s'arrête au-dessus de la consigne plus cette valeur, mesurée par le capteur de la pièce.",
             "inertia_control": "Une fois que la pièce a appris la lenteur de son chauffage, la chauffe prend fin un peu plus tôt quand la chaleur déjà fournie amènera d'elle-même la pièce en haut de la bande d'hystérésis, et commence un peu plus tôt quand la pièce descendrait sinon sous le bas de la bande avant que la chaleur n'arrive. La bande reste la limite. Désactivé : seule l'hystérésis décide."
           }
+        },
+        "windows_notify": {
+          "title": "Notifications de fenêtre ouverte",
+          "data": {
+            "window_notify": "Activer les notifications de fenêtre ouverte"
+          },
+          "data_description": {
+            "window_notify": "Un avertissement lorsqu'une fenêtre ou une porte reste ouverte alors qu'il faut chauffer. Il s'arrête quand la fenêtre est refermée."
+          }
+        },
+        "windows_notify_time": {
+          "title": "Notifications de fenêtre ouverte : au bout de combien de temps",
+          "data": {
+            "window_notify_after": "Notifier après"
+          },
+          "data_description": {
+            "window_notify_after": "Combien de temps la fenêtre peut rester ouverte avant l'avertissement. Le temps compte tant qu'il faut chauffer."
+          }
         }
       },
       "abort": {
@@ -802,7 +818,8 @@
         "level_name_is_key": "Le nom « {name} » est déjà celui d'un autre niveau dans le planning (home, sleep, eco, away, comfort, activity, frost) : choisissez-en un autre.",
         "calibration_sensor_required": "Le calibrage écrit la température de la pièce dans la tête thermostatique : il lui faut donc un capteur de température dans la pièce. Ajoutez-en un, ou réglez le calibrage sur Désactivé.",
         "calibration_entities_required": "Choisissez les entités number de la tête dans lesquelles le calibrage écrit (le décalage ou la température externe), ou réglez le calibrage sur Désactivé à la page précédente.",
-        "entity_is_circuit": "{entity} est un relais de circuit de {owner}. Il ne peut pas aussi être un appareil d'une pièce ou un autre circuit."
+        "entity_is_circuit": "{entity} est un relais de circuit de {owner}. Il ne peut pas aussi être un appareil d'une pièce ou un autre circuit.",
+        "window_notify_time_required": "Choisissez au moins une minute."
       }
     },
     "scenario": {

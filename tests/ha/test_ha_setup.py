@@ -3302,6 +3302,39 @@ async def test_window_timings_of_the_guide(
     await hass.async_block_till_done()
 
 
+async def test_window_notification_per_room(
+    hass: HomeAssistant, freezer: FrozenDateTimeFactory
+) -> None:
+    """A room turns the open-window warning off, or chooses after how long it comes."""
+    entry, _calls, _trv = await _window_trv_house(hass, freezer)
+    house = entry.runtime_data
+    room = next(iter(house.rooms.values()))
+    key = f"window_{room.id}"
+    room.config["window_notify_after"] = "00:05:00"
+
+    hass.states.async_set("binary_sensor.window", "on")
+    await _tick(hass, freezer, 65)
+    assert room.window_open
+    await _tick(hass, freezer, 2 * 60)
+    assert key not in house.active_alerts  # five minutes have not passed
+    await _tick(hass, freezer, 8 * 60)
+    assert house.active_alerts[key]["code"] == "window_long"
+    assert house.active_alerts[key]["params"]["minutes"] == 5
+
+    hass.states.async_set("binary_sensor.window", "off")
+    await _tick(hass, freezer, 35)
+    assert key not in house.active_alerts
+
+    # Off: the window may stay open as long as it does.
+    room.config["window_notify"] = False
+    hass.states.async_set("binary_sensor.window", "on")
+    await _tick(hass, freezer, 65)
+    for _ in range(2):
+        await _tick(hass, freezer, 3600)
+    assert key not in house.active_alerts
+    assert await hass.config_entries.async_unload(entry.entry_id)
+
+
 async def test_mold_alert_needs_humidity_and_outdoor(
     hass: HomeAssistant, freezer: FrozenDateTimeFactory
 ) -> None:

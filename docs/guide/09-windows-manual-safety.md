@@ -38,8 +38,10 @@ Airing shorter than the open delay is ignored.
 window does not lower the heating when the outdoor temperature is at that value
 or above.
 
-**Alert**: if a window stays open longer than *Alert when a window is open longer
-than* (30 minutes by default) while heating is needed, you get an alert.
+**Alert**: on the room's windows page, *Enable open window notifications* (on
+by default) and *Notify after* (30 minutes by default, hh:mm) give a warning
+if a window stays open that long while heating is needed. It ends when the
+window is closed. Turn it off for a room where a window is often left open.
 
 While a window or door sensor is open, nothing is learned.
 
@@ -289,7 +291,7 @@ as the recipient of the important alerts and of the warnings.
 
 | Alert | When |
 | --- | --- |
-| A window has been open for more than … min | the window open longer than the alert threshold, while heat is needed |
+| A window has been open for more than … min | the window open longer than its room's *Notify after*, while heat is needed (warnings; turn it off on the windows page) |
 | … has been unavailable for more than … min | a thermostat or sensor unavailable longer than the alert threshold (important) |
 | The heat source … has been unavailable | then nothing heats, not even frost protection (important) |
 | The circuit relay … has been unavailable | the rooms of its circuit get no heat; repair the relay or change the circuits (important) |

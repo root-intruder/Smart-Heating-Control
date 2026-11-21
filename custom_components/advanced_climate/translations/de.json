@@ -246,7 +246,6 @@
           "quiet_start": "Ruhezeit ab",
           "quiet_end": "Ruhezeit bis",
           "pause_remind_hours": "Erinnern, wenn die Pause länger dauert als",
-          "alert_window_minutes": "Warnen, wenn ein Fenster länger offen ist als",
           "alert_unavailable_minutes": "Warnen, wenn ein Gerät länger nicht verfügbar ist als",
           "alert_silent_hours": "Warnen, wenn ein Temperatursensor nichts sendet seit",
           "alert_no_effect_hours": "Warnen, wenn das Heizen keine Wirkung zeigt seit",
@@ -262,7 +261,6 @@
           "quiet_start": "Ab dieser Uhrzeit werden nur wichtige Warnungen gesendet; die anderen warten bis zum Ende der Ruhezeit und werden nur gesendet, wenn sie dann noch gelten. Beide leer lassen für keine Ruhezeit.",
           "quiet_end": "Ende der Ruhezeit (darf am nächsten Morgen sein).",
           "pause_remind_hours": "Ein Hinweis, wenn die Heizung so lange pausiert ist, danach einmal täglich (eine vergessene Pause heißt kaltes Haus). 0 = nie.",
-          "alert_window_minutes": "Warnen, wenn ein Fenster so lange offen bleibt, während Wärme gebraucht wird.",
           "alert_unavailable_minutes": "Warnen, wenn ein Thermostat oder Sensor so lange nicht verfügbar ist.",
           "alert_silent_hours": "Warnen, wenn ein Raumtemperatursensor verfügbar bleibt, aber so lange keinen Wert gesendet hat (nicht einmal denselben): Eine leere Batterie oder ein verlorenes Signal lassen oft den letzten Wert stehen. Ein stummer Sensor wird ausgelassen, bis er wieder meldet, wie ein nicht verfügbarer (dann zählen die anderen Sensoren, sonst das Thermostat, sonst Eco). 0 = aus. Für Sensoren erhöhen, die nur bei Temperaturänderung melden, und für Template- oder Gruppensensoren (ein Mittelwert), die nur schreiben, wenn sich einer ihrer Sensoren ändert.",
           "alert_no_effect_hours": "Warnen, wenn ein Raum so lange deutlich unter seiner Zieltemperatur heizt und die Temperatur viel weniger steigt, als sein gelerntes Modell erwartet: ein klemmendes Ventil, eine Wärmequelle, die nicht startet, ein offenes Fenster ohne Sensor. Erst wenn der Raum sein Modell gelernt hat (vorher ließe sich eine träge Fußbodenheizung nicht von einer klemmenden unterscheiden). 0 = aus.",
@@ -780,6 +778,24 @@
             "hysteresis": "Der Raum fordert Wärme unter Zieltemperatur minus diesem Wert an und hört über Zieltemperatur plus diesem Wert auf, gemessen vom Raumsensor.",
             "inertia_control": "Sobald der Raum gelernt hat, wie träge seine Heizung reagiert, endet das Heizen etwas früher, wenn die bereits abgegebene Wärme den Raum von selbst an die Obergrenze der Hysterese bringt, und beginnt etwas früher, wenn der Raum sonst unter die Untergrenze fiele, bevor die Wärme ankommt. Die Grenzen bleiben. Aus: Nur die Hysterese entscheidet."
           }
+        },
+        "windows_notify": {
+          "title": "Meldungen bei offenem Fenster",
+          "data": {
+            "window_notify": "Meldungen bei offenem Fenster aktivieren"
+          },
+          "data_description": {
+            "window_notify": "Eine Warnung, wenn ein Fenster oder eine Tür offen bleibt, während geheizt werden muss. Sie endet, wenn das Fenster wieder zu ist."
+          }
+        },
+        "windows_notify_time": {
+          "title": "Meldungen bei offenem Fenster: nach welcher Zeit",
+          "data": {
+            "window_notify_after": "Melden nach"
+          },
+          "data_description": {
+            "window_notify_after": "Wie lange das Fenster offen bleiben darf, bevor die Warnung kommt. Die Zeit zählt, solange Wärme gebraucht wird."
+          }
         }
       },
       "abort": {
@@ -802,7 +818,8 @@
         "level_name_is_key": "Der Name „{name}“ ist im Zeitplan schon der Name einer anderen Stufe (home, sleep, eco, away, comfort, activity, frost): Wähle einen anderen.",
         "calibration_sensor_required": "Die Kalibrierung schreibt die Raumtemperatur ins Heizkörperthermostat und braucht daher einen Temperatursensor im Raum. Füge einen hinzu oder stelle die Kalibrierung auf Aus.",
         "calibration_entities_required": "Wähle die number-Entitäten des Heizkörperthermostats, in die die Kalibrierung schreibt (Offset oder externe Temperatur), oder stelle die Kalibrierung auf der vorigen Seite auf Aus.",
-        "entity_is_circuit": "{entity} ist ein Kreisrelais von {owner}. Es kann nicht zusätzlich Gerät eines Raums oder ein anderer Kreis sein."
+        "entity_is_circuit": "{entity} ist ein Kreisrelais von {owner}. Es kann nicht zusätzlich Gerät eines Raums oder ein anderer Kreis sein.",
+        "window_notify_time_required": "Wähle mindestens eine Minute."
       }
     },
     "scenario": {

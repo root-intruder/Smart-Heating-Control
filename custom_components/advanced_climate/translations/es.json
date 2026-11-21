@@ -246,7 +246,6 @@
           "quiet_start": "Horas de silencio desde",
           "quiet_end": "Horas de silencio hasta",
           "pause_remind_hours": "Recordar cuando la pausa dura más de",
-          "alert_window_minutes": "Alertar cuando una ventana está abierta más de",
           "alert_unavailable_minutes": "Alertar cuando un dispositivo no está disponible más de",
           "alert_silent_hours": "Alertar cuando un sensor de temperatura no envía nada durante",
           "alert_no_effect_hours": "Alertar cuando la calefacción no tiene efecto durante",
@@ -262,7 +261,6 @@
           "quiet_start": "Desde esta hora solo se envían las alertas importantes; las demás esperan hasta que terminan las horas de silencio y solo se envían si siguen siendo válidas. Deja ambos vacíos para no tener horas de silencio.",
           "quiet_end": "Fin de las horas de silencio (puede ser a la mañana siguiente).",
           "pause_remind_hours": "Un aviso cuando la calefacción sigue en pausa este tiempo y, después, una vez al día (una pausa olvidada significa una casa fría). 0 = nunca.",
-          "alert_window_minutes": "Alertar cuando una ventana sigue abierta este tiempo mientras hace falta calefacción.",
           "alert_unavailable_minutes": "Alertar cuando un termostato o un sensor no está disponible durante este tiempo.",
           "alert_silent_hours": "Alertar cuando un sensor de temperatura de una habitación sigue disponible pero no ha enviado ningún valor (ni siquiera el mismo) durante este tiempo: una batería agotada o una señal perdida a menudo conservan el último valor. Un sensor de la habitación que no informa queda excluido hasta que vuelva a informar, como uno no disponible (se usan los demás sensores; si no, el termostato; si no, eco). 0 = desactivado. Súbelo para sensores que solo informan cuando cambia la temperatura y para un sensor de plantilla o de grupo (una media), que solo escribe un valor cuando cambia uno de sus sensores.",
           "alert_no_effect_hours": "Alertar cuando una habitación calienta durante este tiempo, claramente por debajo de su objetivo, y su temperatura sube mucho menos de lo que espera su modelo aprendido: una válvula atascada, una fuente de calor que no arranca, una ventana abierta sin sensor. Solo cuando la habitación ya ha aprendido su modelo (antes no se podría distinguir un suelo radiante lento de uno atascado). 0 = desactivado.",
@@ -780,6 +778,24 @@
             "hysteresis": "La habitación pide calor por debajo del objetivo menos este valor y deja de pedirlo por encima del objetivo más este valor, medido por el sensor de la habitación.",
             "inertia_control": "Una vez que la habitación ha aprendido lo despacio que reacciona su calefacción, la calefacción termina un poco antes cuando el calor ya aportado llevaría la habitación por sí solo al límite superior de la banda de histéresis, y empieza un poco antes cuando la habitación bajaría a su límite inferior antes de que llegue el calor. La banda sigue siendo el límite. Desactivado: solo decide la histéresis."
           }
+        },
+        "windows_notify": {
+          "title": "Avisos de ventana abierta",
+          "data": {
+            "window_notify": "Activar los avisos de ventana abierta"
+          },
+          "data_description": {
+            "window_notify": "Un aviso cuando una ventana o una puerta sigue abierta mientras hace falta calefacción. Termina cuando la ventana se cierra."
+          }
+        },
+        "windows_notify_time": {
+          "title": "Avisos de ventana abierta: tras cuánto tiempo",
+          "data": {
+            "window_notify_after": "Avisar tras"
+          },
+          "data_description": {
+            "window_notify_after": "Cuánto puede seguir abierta la ventana antes del aviso. El tiempo cuenta mientras hace falta calefacción."
+          }
         }
       },
       "abort": {
@@ -802,7 +818,8 @@
         "level_name_is_key": "El nombre “{name}” es el nombre de otro nivel dentro de la programación (home, sleep, eco, away, comfort, activity, frost): elige otro.",
         "calibration_sensor_required": "La calibración de la válvula termostática escribe la temperatura de la habitación en la válvula, así que necesita un sensor de temperatura de la habitación. Añade uno o pon la calibración en Desactivada.",
         "calibration_entities_required": "Elige las entidades numéricas de la válvula termostática en las que escribe la calibración (el desfase o la entrada de temperatura externa), o pon la calibración en Desactivada en la página anterior.",
-        "entity_is_circuit": "{entity} es un relé de circuito de {owner}. No puede ser también un dispositivo de una habitación ni de otro circuito."
+        "entity_is_circuit": "{entity} es un relé de circuito de {owner}. No puede ser también un dispositivo de una habitación ni de otro circuito.",
+        "window_notify_time_required": "Elige al menos un minuto."
       }
     },
     "scenario": {

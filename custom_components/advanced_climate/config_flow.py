@@ -34,7 +34,6 @@ from .const import (
     CONF_ALERT_NO_EFFECT_HOURS,
     CONF_ALERT_SILENT_HOURS,
     CONF_ALERT_UNAVAILABLE_MINUTES,
-    CONF_ALERT_WINDOW_MINUTES,
     CONF_AREA,
     CONF_ARRIVAL_DELAY,
     CONF_ARRIVAL_DISTANCE,
@@ -159,6 +158,8 @@ from .const import (
     CONF_WINDOW_DROP_DETECT,
     CONF_WINDOW_DROP_MINUTES,
     CONF_WINDOW_IGNORE_ABOVE,
+    CONF_WINDOW_NOTIFY,
+    CONF_WINDOW_NOTIFY_AFTER,
     CONF_WINDOW_OPEN_DELAY,
     CONF_WINDOW_SENSORS,
     CONF_WORKDAY_SENSOR,
@@ -206,6 +207,7 @@ from .scenarios import overlapping, own_schedule
 from .schedule import NAME_RE, ScheduleError, parse_schedule
 from .util import (
     as_list,
+    clock_minutes,
     delta_from_celsius,
     delta_to_celsius,
     from_celsius,
@@ -717,7 +719,6 @@ def _alerts_schema(v: dict[str, Any], rooms: int, targets: list[str] | None = No
         _opt(CONF_QUIET_START, v): selector.TimeSelector(),
         _opt(CONF_QUIET_END, v): selector.TimeSelector(),
         _req(CONF_PAUSE_REMIND_HOURS, v, d): _number(0, 168, 1, "h"),
-        _req(CONF_ALERT_WINDOW_MINUTES, v, d): _number(1, 720, 1, "min"),
         _req(CONF_ALERT_UNAVAILABLE_MINUTES, v, d): _number(1, 720, 1, "min"),
         _req(CONF_ALERT_SILENT_HOURS, v, d): _number(0, 48, 0.5, "h"),
         _req(CONF_ALERT_NO_EFFECT_HOURS, v, d): _number(0, 12, 0.5, "h"),
@@ -1152,7 +1153,8 @@ class AdvancedClimateConfigFlow(_UnitForms, _HouseHeatingSteps, ConfigFlow, doma
     VERSION = 1
     # 2: circuit relays work also without a heat source (those left from a
     # removed heat source are cleared once, see async_migrate_entry).
-    MINOR_VERSION = 2
+    # 3: the open-window warning moved from the house to each room.
+    MINOR_VERSION = 3
 
     def __init__(self) -> None:
         """Initialize."""
@@ -2199,8 +2201,49 @@ class RoomSubentryFlow(_UnitForms, ConfigSubentryFlow):
         )
         if user_input is not None:
             self._data = _merge(self._data, schema, self._kept(user_input))
+            if (
+                as_list(self._data.get(CONF_WINDOW_SENSORS))
+                or as_list(self._data.get(CONF_LINKED_WINDOW_SENSORS))
+                or self._data.get(CONF_WINDOW_DROP_DETECT)
+            ):
+                return await self.async_step_windows_notify()
             return await self.async_step_windows_details()
         return self.async_show_form(step_id="windows", data_schema=schema)
+
+    async def async_step_windows_notify(
+        self, user_input: dict[str, Any] | None = None
+    ) -> SubentryFlowResult:
+        """Whether a window left open is told, and after how long."""
+        d = self._shown()
+        schema = vol.Schema({_req(CONF_WINDOW_NOTIFY, d, ROOM_DEFAULTS): _bool()})
+        if user_input is not None:
+            self._data = _merge(self._data, schema, self._kept(user_input))
+            if self._data.get(CONF_WINDOW_NOTIFY, ROOM_DEFAULTS[CONF_WINDOW_NOTIFY]):
+                return await self.async_step_windows_notify_time()
+            return await self.async_step_windows_details()
+        return self.async_show_form(step_id="windows_notify", data_schema=schema)
+
+    async def async_step_windows_notify_time(
+        self, user_input: dict[str, Any] | None = None
+    ) -> SubentryFlowResult:
+        """How long the window may stay open before the warning."""
+        d = self._shown()
+        after = d.get(CONF_WINDOW_NOTIFY_AFTER) or ROOM_DEFAULTS[CONF_WINDOW_NOTIFY_AFTER]
+        schema = vol.Schema(
+            {
+                vol.Required(CONF_WINDOW_NOTIFY_AFTER, default=after): selector.TimeSelector(),
+            }
+        )
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            if clock_minutes(user_input.get(CONF_WINDOW_NOTIFY_AFTER)) < 1:
+                errors[CONF_WINDOW_NOTIFY_AFTER] = "window_notify_time_required"
+            else:
+                self._data = _merge(self._data, schema, self._kept(user_input))
+                return await self.async_step_windows_details()
+        return self.async_show_form(
+            step_id="windows_notify_time", data_schema=schema, errors=errors
+        )
 
     async def async_step_windows_details(
         self, user_input: dict[str, Any] | None = None

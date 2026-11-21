@@ -27,7 +27,6 @@ NUMBER_LIMITS: dict[tuple[str, str], tuple[Any, ...]] = {
     ("alerts", "alert_no_effect_hours"): (0.0, 12.0, 0.5, "h"),
     ("alerts", "alert_silent_hours"): (0.0, 48.0, 0.5, "h"),
     ("alerts", "alert_unavailable_minutes"): (1.0, 720.0, 1.0, "min"),
-    ("alerts", "alert_window_minutes"): (1.0, 720.0, 1.0, "min"),
     ("alerts", "battery_threshold"): (1.0, 100.0, 1.0, "%"),
     ("alerts", "pause_remind_hours"): (0.0, 168.0, 1.0, "h"),
     ("alerts", "room_diff_alert"): (0.0, 10.0, 0.5, "°C"),

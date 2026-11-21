@@ -5,7 +5,12 @@ from __future__ import annotations
 from homeassistant.core import HomeAssistant
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.advanced_climate.const import DOMAIN, SUBENTRY_ROOM
+from custom_components.advanced_climate.const import (
+    CONF_WINDOW_NOTIFY,
+    CONF_WINDOW_NOTIFY_AFTER,
+    DOMAIN,
+    SUBENTRY_ROOM,
+)
 
 ROOM = {"source": "climate", "climates": ["climate.trv"], "command_mode": "temperature"}
 
@@ -42,7 +47,7 @@ def _circuits(entry: MockConfigEntry) -> tuple:
 
 async def test_circuits_left_from_a_removed_heat_source_are_cleared(hass: HomeAssistant) -> None:
     entry = await _setup(hass, {"circuits": ["switch.floor"], "boiler_min_rooms": 2}, 1)
-    assert entry.minor_version == 2
+    assert entry.minor_version == 3
     assert _circuits(entry) == (None, {"Office": None, "Hall": None})
     # The rest is kept.
     assert entry.options["boiler_min_rooms"] == 2
@@ -52,7 +57,7 @@ async def test_circuits_left_from_a_removed_heat_source_are_cleared(hass: HomeAs
 
 async def test_circuits_of_a_heat_source_are_kept(hass: HomeAssistant) -> None:
     entry = await _setup(hass, {"boiler_entity": "switch.boiler", "circuits": ["switch.floor"]}, 1)
-    assert entry.minor_version == 2
+    assert entry.minor_version == 3
     assert _circuits(entry) == (["switch.floor"], {"Office": "switch.floor", "Hall": None})
     await hass.config_entries.async_unload(entry.entry_id)
 
@@ -69,3 +74,18 @@ async def test_a_house_of_a_newer_version_is_not_loaded(hass: HomeAssistant) -> 
     entry = MockConfigEntry(domain=DOMAIN, title="Home", version=2, options={})
     entry.add_to_hass(hass)
     assert not await hass.config_entries.async_setup(entry.entry_id)
+
+
+async def test_the_window_alert_time_of_the_house_moves_to_the_rooms(
+    hass: HomeAssistant,
+) -> None:
+    """Before 2.7 one time for every window; each room gets it on its windows page."""
+    entry = await _setup(hass, {"alert_window_minutes": 45}, 2)
+    assert entry.minor_version == 3
+    assert "alert_window_minutes" not in entry.options
+    after = {
+        sub.title: (sub.data[CONF_WINDOW_NOTIFY], sub.data[CONF_WINDOW_NOTIFY_AFTER])
+        for sub in entry.subentries.values()
+    }
+    assert after == {"Office": (True, "00:45:00"), "Hall": (True, "00:45:00")}
+    await hass.config_entries.async_unload(entry.entry_id)

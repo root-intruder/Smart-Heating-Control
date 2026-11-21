@@ -52,7 +52,7 @@ async def test_user_flow(hass: HomeAssistant) -> None:
     assert result["title"] == "Home"
     assert result["options"]["home_rule"] == "any"
     # A new house is of the current version: nothing to bring up to date.
-    assert result["result"].minor_version == 2
+    assert result["result"].minor_version == 3
     zone = next(iter(result["result"].subentries.values()))
     assert zone.title == "Whole house"
     assert zone.unique_id == "whole_house"
@@ -1321,6 +1321,69 @@ async def test_trv_calibration_off_needs_nothing(hass: HomeAssistant) -> None:
         result["flow_id"], {"temperature_sensors": [], "calibration_mode": "off"}
     )
     assert result["step_id"] == "windows"
+
+
+async def test_open_window_notifications_per_room(hass: HomeAssistant) -> None:
+    """The windows page asks whether a long open window is told, and after how long."""
+    for trv in ("climate.trv", "climate.trv2"):
+        hass.states.async_set(
+            trv, "heat", {"hvac_modes": ["heat", "off"], "hvac_action": "idle"}
+        )
+    hass.states.async_set("binary_sensor.window", "off")
+    hass.states.async_set("binary_sensor.window2", "off")
+    entry = _house_with_rooms(hass)
+    rooms = hass.config_entries.subentries
+
+    async def to_windows(name: str, trv: str) -> dict:
+        result = await rooms.async_init(
+            (entry.entry_id, SUBENTRY_ROOM), context={"source": SOURCE_USER}
+        )
+        result = await rooms.async_configure(
+            result["flow_id"], {"name": name, "source": "climate"}
+        )
+        result = await rooms.async_configure(
+            result["flow_id"], {"climates": [trv], "command_mode": "temperature"}
+        )
+        result = await _until(hass, result, rooms, stop={"sensors"})
+        result = await rooms.async_configure(
+            result["flow_id"], {"temperature_sensors": [], "calibration_mode": "off"}
+        )
+        assert result["step_id"] == "windows"
+        return result
+
+    result = await to_windows("Hall", "climate.trv")
+    result = await rooms.async_configure(
+        result["flow_id"], {"window_sensors": ["binary_sensor.window"]}
+    )
+    assert result["step_id"] == "windows_notify"
+    assert _keys(result) == {"window_notify"}
+    result = await rooms.async_configure(result["flow_id"], {"window_notify": True})
+    assert result["step_id"] == "windows_notify_time"
+    assert _keys(result) == {"window_notify_after"}
+    result = await rooms.async_configure(
+        result["flow_id"], {"window_notify_after": "00:00:00"}
+    )
+    assert result["step_id"] == "windows_notify_time"
+    assert result["errors"] == {"window_notify_after": "window_notify_time_required"}
+    result = await rooms.async_configure(
+        result["flow_id"], {"window_notify_after": "00:45:00"}
+    )
+    assert result["step_id"] == "windows_details"
+    result = await _until(hass, result, rooms, stop=set())
+    data = next(sub for sub in entry.subentries.values() if sub.title == "Hall").data
+    assert (data["window_notify"], data["window_notify_after"]) == (True, "00:45:00")
+
+    # Off: no time is asked.
+    result = await to_windows("Bath", "climate.trv2")
+    result = await rooms.async_configure(
+        result["flow_id"], {"window_sensors": ["binary_sensor.window2"]}
+    )
+    assert result["step_id"] == "windows_notify"
+    result = await rooms.async_configure(result["flow_id"], {"window_notify": False})
+    assert result["step_id"] == "windows_details"
+    await _until(hass, result, rooms, stop=set())
+    data = next(sub for sub in entry.subentries.values() if sub.title == "Bath").data
+    assert data["window_notify"] is False
 
 
 async def test_circuits_of_the_house_and_the_circuit_of_a_room(hass: HomeAssistant) -> None:

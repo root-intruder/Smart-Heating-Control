@@ -227,7 +227,8 @@ CONF_QUIET_START: Final = "quiet_start"
 CONF_QUIET_END: Final = "quiet_end"
 # A reminder when the pause stays on this long (hours; 0 = never).
 CONF_PAUSE_REMIND_HOURS: Final = "pause_remind_hours"
-CONF_ALERT_WINDOW_MINUTES: Final = "alert_window_minutes"
+# Before 2.7 one alert time for every window of the house; now on the room.
+LEGACY_CONF_ALERT_WINDOW_MINUTES: Final = "alert_window_minutes"
 CONF_ALERT_UNAVAILABLE_MINUTES: Final = "alert_unavailable_minutes"
 # A room temperature sensor that has sent nothing for this long (h; 0 = off).
 CONF_ALERT_SILENT_HOURS: Final = "alert_silent_hours"
@@ -293,7 +294,6 @@ HOUSE_DEFAULTS: Final = {
     CONF_REEVAL_MINUTES: 5,
     CONF_VACATION_PREHEAT: 4.0,
     CONF_AUTO_VACATION_HOURS: 0.0,
-    CONF_ALERT_WINDOW_MINUTES: 30,
     CONF_ALERT_UNAVAILABLE_MINUTES: 15,
     CONF_ALERT_SILENT_HOURS: 12.0,
     CONF_ALERT_NO_EFFECT_HOURS: 2.0,
@@ -363,6 +363,9 @@ CONF_WINDOW_ACTION: Final = "window_action"
 CONF_WINDOW_DROP_DETECT: Final = "window_drop_detect"
 CONF_WINDOW_DROP_DEGREES: Final = "window_drop_degrees"
 CONF_WINDOW_DROP_MINUTES: Final = "window_drop_minutes"
+# A warning while a window stays open: on / off, and how long as HH:MM:SS.
+CONF_WINDOW_NOTIFY: Final = "window_notify"
+CONF_WINDOW_NOTIFY_AFTER: Final = "window_notify_after"
 CONF_SCHEDULE_SOURCE: Final = "schedule_source"
 CONF_SCHEDULE: Final = "schedule"
 # Days and on / off of each profile: {name: {"days": ..., "enabled": bool}}.
@@ -453,6 +456,8 @@ ROOM_DEFAULTS: Final = {
     CONF_WINDOW_DROP_DETECT: False,
     CONF_WINDOW_DROP_DEGREES: 1.0,
     CONF_WINDOW_DROP_MINUTES: 3,
+    CONF_WINDOW_NOTIFY: True,
+    CONF_WINDOW_NOTIFY_AFTER: "00:30:00",
     CONF_SCHEDULE_SOURCE: SCHEDULE_INTERNAL,
     CONF_SCHEDULE: DEFAULT_SCHEDULE,
     CONF_HELPER_ON_PRESET: PRESET_HOME,
